@@ -18,16 +18,14 @@
     <ion-row>
       <ion-col col-12>
         <ion-list>
-          <form (ngSubmit)="saveForm()">
-            <ion-item>
-              <ion-label fixed>State</ion-label>
-              <ion-input [(ngModel)]="location.state" name="state" type="text"></ion-input>
-            </ion-item>
+          <form>
             <ion-item>
               <ion-label fixed>City</ion-label>
-              <ion-input [(ngModel)]="location.city" name="city" type="text"></ion-input>
+              <ion-input [(ngModel)]="city" name="city" type="text" placeholder="Type city name here..."></ion-input>
             </ion-item>
-            <button ion-button type="submit" block>Save Changes</button>
+            <h5 text-center>or use your current location</h5>
+            <button ion-button block (click)="setGeolocation()">Use location</button>
+            <button ion-button block class="save-changes-button" (click)="saveCity()">Save Changes</button>
           </form>
         </ion-list>
       </ion-col>

@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import {  NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { Geolocation } from '@ionic-native/geolocation';
 import { HomePage } from '../home/home';
+
 
 /**
  * Generated class for the SettingsPage page.
@@ -15,31 +17,56 @@ import { HomePage } from '../home/home';
   templateUrl: 'settings.html',
 })
 export class SettingsPage {
-  location: {
-    city: string,
-    state: string
+  public city: string;
+  storageInformation : {
+    cityName: string,
+    latitude: number,
+    longitude: number,
+    flag: string
   } = {
-    state: 'RU',
-    city: 'Moscow'
+    cityName: '',
+    latitude: 0,
+    longitude: 0,
+    flag: 'none'
   };
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
+              private geolocation: Geolocation,
               private storage: Storage ) { }
 
   ionViewWillEnter() {
     this.storage.get('location').then((val) => {
-      if(val != null){
-        this.location = JSON.parse(val);
+      if(val == null) {
+        this.storage.set('location', this.storageInformation)
+      } else {
+        this.storageInformation = JSON.parse(val);
       }
     })
   }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad SettingsPage');
   }
 
-  saveForm() {
-    this.storage.set('location', JSON.stringify(this.location));
-    this.navCtrl.push(HomePage);
+  saveCity() {
+    console.log(this.storageInformation);
+    this.storageInformation.cityName = this.city;
+    // this.storageInformation.flag = 'cityName';
+    this.storage.set('location', JSON.stringify(this.storageInformation));
+    // this.navCtrl.push(HomePage);
+
+  }
+
+  setGeolocation() {
+    this.geolocation.getCurrentPosition().then((resp) => {
+      this.storageInformation.latitude = resp.coords.latitude;
+      this.storageInformation.longitude = resp.coords.longitude;
+      this.storageInformation.flag = 'geolocation';
+      this.storage.set('location', JSON.stringify(this.storageInformation));
+    }).catch((error) => {
+      this.storageInformation.flag = 'none';
+      this.storage.set('location', JSON.stringify(this.storageInformation));
+    });
   }
 }

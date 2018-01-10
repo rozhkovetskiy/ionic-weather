@@ -17,16 +17,18 @@
   <ion-grid>
     <ion-row>
       <ion-col col-12>
-        <ion-list>
-          <form>
-            <ion-item>
-              <ion-label fixed>City</ion-label>
-              <ion-input [(ngModel)]="city" name="city" type="text" placeholder="Type city name here..."></ion-input>
-            </ion-item>
-            <h5 text-center>or use your current location</h5>
-            <button ion-button block (click)="setGeolocation()">Use location</button>
-            <button ion-button block class="save-changes-button" (click)="saveCity()">Save Changes</button>
-          </form>
+        <h6 text-center *ngIf="storageInformation.flag === 'cityName'">City saved</h6>
+        <h6 text-center *ngIf="storageInformation.flag === 'location'">Location saved</h6>
+        <ion-list *ngIf="settingsForm">
+            <form [formGroup]="settingsForm" (ngSubmit)="saveCity()">
+              <ion-item>
+                <ion-label fixed>City</ion-label>
+                <ion-input formControlName="city" type="text" placeholder="Type city name here..." ></ion-input>
+              </ion-item>
+              <button ion-button block type="submit" [disabled]="!settingsForm.valid">Save Changes</button>
+            </form>
+            <h5 text-center class="use-location">or use your current location instead</h5>
+            <button ion-button block class="save-geolocation-button" (click)="setGeolocation()">Use location</button>
         </ion-list>
       </ion-col>
     </ion-row>

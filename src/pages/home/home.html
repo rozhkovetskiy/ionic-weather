@@ -5,13 +5,21 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-grid *ngIf="weather">
+  <ion-grid>
     <ion-row>
-      <ion-col col-6 offset-3 text-center>
-        <h2>{{weather.name}}</h2>
-        <img src="{{weatherIcon}}" alt="">
-        <h3>{{weather.weather[0].description}}</h3>
-        <h1>{{weather.main.temp}} C&deg;</h1>
+      <ion-col col-6 offset-3 text-center *ngIf="locationData">
+        <!-- check response from backend. If we have no data from backend also show this message -->
+        <div class="weather-no-info" *ngIf="locationData.flag === 'none' ">
+          <h5>Seems like we don't have information about your location or weather</h5>
+          <h6>Please go to settings</h6>
+        </div>
+        <div *ngIf="locationData.flag === 'cityName' || locationData.flag === 'location'">
+          <!--<h2>{{weather.name}}</h2>-->
+          <!--<img src="{{weatherIcon}}" alt="">-->
+          <!--<h3>{{weather.weather[0].description}}</h3>-->
+          <!--<h1>{{weather.main.temp}} C&deg;</h1>-->
+        </div>
+
       </ion-col>
     </ion-row>
   </ion-grid>

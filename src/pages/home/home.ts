@@ -12,9 +12,11 @@ import { Geolocation } from '@ionic-native/geolocation';
 export class HomePage {
   weather: any;
   weatherIcon: string;
-  location: {
+  locationData : {
+    cityName: string,
     latitude: number,
-    longitude: number
+    longitude: number,
+    flag: string
   };
 
   constructor(public navCtrl: NavController,
@@ -25,19 +27,19 @@ export class HomePage {
   }
 
   ionViewWillEnter() {
-
-    this.geolocation.getCurrentPosition().then((resp) => {
-
-      this.weatherProvider.getWeather(resp.coords.latitude, resp.coords.longitude)
-        .subscribe((response) => {
-          this.weather = response;
-          this.weather.main.temp = Math.round(this.weather.main.temp);
-          this.weatherIcon = `http://openweathermap.org/img/w/${this.weather.weather[0].icon}.png`;
-        });
-
-    }).catch((error) => {
-      console.log('Error getting location', error);
+    // get information about location from storage
+    this.storage.get('location').then((val) => {
+      if (val == null) {
+        this.locationData.flag = 'none';
+      } else {
+        this.locationData = JSON.parse(val);
+      }
     });
-
+    // this.weatherProvider.getWeather(resp.coords.latitude, resp.coords.longitude)
+    //   .subscribe((response) => {
+    //     this.weather = response;
+    //     this.weather.main.temp = Math.round(this.weather.main.temp);
+    //     this.weatherIcon = `http://openweathermap.org/img/w/${this.weather.weather[0].icon}.png`;
+    //   });
   }
 }

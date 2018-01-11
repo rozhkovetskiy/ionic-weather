@@ -42,9 +42,9 @@ export class HomePage {
               this.weather = response;
               this.weather.main.temp = Math.round(this.weather.main.temp);
               this.weatherIcon = `http://openweathermap.org/img/w/${this.weather.weather[0].icon}.png`;
-            });
+            }, () => this.locationData.flag = 'none');
           this.weatherProvider.getWeatherForecast(this.locationData.cityName).subscribe((response) => {
-            console.log(response.list)
+            console.log(response.list);
             this.weatherForecast = response.list;
           })
         }

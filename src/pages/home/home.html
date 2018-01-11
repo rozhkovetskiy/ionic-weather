@@ -30,7 +30,7 @@
       <ion-card class="weather-card" text-center *ngFor="let weatherState of weatherForecast">
         <ion-card-content>
           <!-- TODO pipe for date -->
-          <p>{{weatherState.dt*1000 | date: short}}</p>
+          <p>{{weatherState.dt}}</p>
           <img [src]="getWeatherIcon(weatherState.weather[0].icon)" alt="weather icon" style="width: 50px; margin: 0 auto">
           <!-- TODO pipe for  -->
           <h6>{{weatherState.main.temp}} C&deg;</h6>

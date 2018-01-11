@@ -5,22 +5,41 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-grid>
+  <ion-grid *ngIf="locationData">
     <ion-row>
-      <ion-col col-6 offset-3 text-center *ngIf="locationData">
+      <ion-col col-6 offset-3 text-center>
         <!-- check response from backend. If we have no data from backend also show this message -->
         <div class="weather-no-info" *ngIf="locationData.flag === 'none' ">
-          <h5>Seems like we don't have information about your location or weather</h5>
-          <h6>Please go to settings</h6>
+          <h5 text-center>Seems like we don't have information about your location or weather</h5>
+          <h6 text-center>Please go to settings</h6>
         </div>
-        <div *ngIf="locationData.flag === 'cityName' || locationData.flag === 'location'">
-          <!--<h2>{{weather.name}}</h2>-->
-          <!--<img src="{{weatherIcon}}" alt="">-->
-          <!--<h3>{{weather.weather[0].description}}</h3>-->
-          <!--<h1>{{weather.main.temp}} C&deg;</h1>-->
+        <div text-center class="weather-place-information">
+          <h6 text-center *ngIf="locationData.flag === 'cityName'">by selected city</h6>
+          <h6 text-center *ngIf="locationData.flag === 'location'">by current location</h6>
         </div>
-
+        <div *ngIf="(locationData.flag === 'cityName' || locationData.flag === 'location') && weather">
+          <h2>{{weather.name}}</h2>
+          <img [src]="weatherIcon" alt="weather icon">
+          <h3>{{weather.weather[0].description}}</h3>
+          <h1>{{weather.main.temp}} C&deg;</h1>
+        </div>
       </ion-col>
     </ion-row>
+
+    <ion-scroll scrollX="true" style="height: 180px" direction="x" *ngIf="weatherForecast">
+      <ion-card class="weather-card" text-center *ngFor="let weatherState of weatherForecast">
+        <ion-card-content>
+          <!-- TODO pipe for date -->
+          <p>{{weatherState.dt*1000 | date: short}}</p>
+          <img [src]="getWeatherIcon(weatherState.weather[0].icon)" alt="weather icon" style="width: 50px; margin: 0 auto">
+          <!-- TODO pipe for  -->
+          <h6>{{weatherState.main.temp}} C&deg;</h6>
+          <h6>{{weatherState.weather[0].description}}</h6>
+        </ion-card-content>
+
+      </ion-card>
+
+    </ion-scroll>
+
   </ion-grid>
 </ion-content>

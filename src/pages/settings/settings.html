@@ -20,7 +20,7 @@
         <h6 text-center *ngIf="storageInformation.flag === 'cityName'">City saved</h6>
         <h6 text-center *ngIf="storageInformation.flag === 'location'">Location saved</h6>
         <ion-list *ngIf="settingsForm">
-            <form [formGroup]="settingsForm" (ngSubmit)="saveCity()">
+            <form [formGroup]="settingsForm" (ngSubmit)="saveCity(settingsForm.value.city)">
               <ion-item>
                 <ion-label fixed>City</ion-label>
                 <ion-input formControlName="city" type="text" placeholder="Type city name here..." ></ion-input>

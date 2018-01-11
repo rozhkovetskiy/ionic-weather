@@ -56,13 +56,14 @@ export class SettingsPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SettingsPage');
+    // console.log('ionViewDidLoad SettingsPage');
   }
 
-  public saveCity() {
-    console.log(this.storageInformation);
-    this.storageInformation.cityName = this.city;
+  public saveCity(city) {
+    // console.log(this.storageInformation);
+    this.storageInformation.cityName = city;
     this.storageInformation.flag = 'cityName';
+    console.log(JSON.stringify(this.storageInformation));
     this.storage.set('location', JSON.stringify(this.storageInformation));
     // this.navCtrl.push(HomePage);
 
